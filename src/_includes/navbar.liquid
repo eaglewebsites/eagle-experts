@@ -1,0 +1,96 @@
+<!-- header/navbar -->
+<section x-data="navbar()" class="bg-blue-900">
+    <!-- Solid bar border-->
+    <div class="h-2 bg-orange-500"></div>
+
+    <!-- navbar -->
+    <div class="container mx-auto">
+        <div class="flex items-center justify-between py-4 px-4 md:px-0">
+            <a class="flex items-center flex-row text-xl md:text-3xl font-semibold text-white" href="#">
+                <img class="h-8 md:h-12 mr-4" src="../img/eagle-logo-blue.png" alt="Eagle Logo">
+                Eagle Experts
+            </a>
+            <div class="flex flex-row items-center">
+                <!-- Desktop -->
+                <div class="hidden md:block">
+                    <a href="#" class="text-white hover:text-white mr-2 hover:underline">Advertise With Us</a>
+                    <a href="#" class="text-white hover:text-white hover:underline">Post.com</a>
+                </div>
+
+                <!-- Mobile Button-->
+                <div x-on:click="toggleMobileMenu()" class="block md:hidden">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </div>
+
+                <!-- Mobile Menu -->
+                <div x-show.transition.opacity.150ms="showMobileMenu" class="md:hidden fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50" style="display:hidden;">
+                    <div x-show.transition="showMobileMenu" class="bg-white rounded p-4 shadow-xl m-4">
+                        <div class="flex justify-between items-center mb-8">
+                            <div>
+                                Eagle Experts
+                            </div>
+                            <div x-on:click="toggleMobileMenu()">
+                                <!-- Close button -->
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round" class="text-gray-900">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </div>
+                        </div>
+                        <div>
+
+                            <!-- Link -->
+                            <div class="mb-5">
+                                <a href="#" class="flex items-center">
+                                    <div class="flex items-center w-8 pb-2">
+                                        📝
+                                    </div>
+                                    <div class="flex flex-1 justify-between border-b pb-2">
+                                        <div>
+                                            Advertise with us
+                                        </div>
+                                        <div>
+                                            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                                                stroke-linecap="round" stroke-linejoin="round" class="text-blue-500">
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                                <polyline points="12 5 19 12 12 19"></polyline>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <!-- Link -->
+                            <div class="mb-5">
+                                <a href="#" class="flex items-center">
+                                    <div class="flex items-center w-8 pb-2">
+                                        🗞
+                                    </div>
+                                    <div class="flex flex-1 justify-between border-b pb-2">
+                                        <div>
+                                            Post
+                                        </div>
+                                        <div>
+                                            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                                                stroke-linecap="round" stroke-linejoin="round" class="text-blue-500">
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                                <polyline points="12 5 19 12 12 19"></polyline>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
