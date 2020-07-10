@@ -1,0 +1,39 @@
+---
+pageTitle: Eagle Experts
+layout: layout.liquid
+---
+
+<!-- Big Logo Intro-->
+<section class="container mx-auto my-12 p-4">
+    <img class="mx-auto h-48" src="/img/eagle-logo-blue.png" alt="Eagle Logo" />
+    <h1 class="text-5xl md:text-6xl font-black text-center -mt-20">Eagle Experts</h1>
+    <p class="text-center text-xl">
+        Your guide to finding the best local services
+    </p>
+</section>
+
+<!-- Large Text-->
+<section class="container mx-auto my-12 p-4">
+    <h2 class="text-2xl md:text-4xl uppercase text-center">Businesses Committed to Improve Everyday Living</h2>
+</section>
+
+<!-- Expert Links-->
+<section class="max-w-6xl mx-auto my-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        {% for expert in collections.experts %}
+            <!--Expert-->
+            <a href="{{ expert.url }}" class="transition duration-150 ease-in-out flex justify-between md:rounded-lg overflow-hidden shadow-lg md:border-4 md:border-white hover:border-blue-500 bg-white">
+                <div class="w-32 md:w-48 bg-cover bg-center bg-blue-500"
+                    style="background-image: url('{{ expert.data.backgroundImage }}');">
+                </div>
+                <div class="flex-1 p-4 bg-white">
+                    <p class="text-center text-xl">{{ expert.data.categoryTitle }}</p>
+                    <div class="h-1 bg-orange-400 w-12 mx-auto rounded-full"></div>
+                    <img class="mx-auto h-32 py-6" src="{{ expert.data.logo }}" />
+                </div>
+            </a>
+        {% endfor %}
+
+    </div>
+</section>
