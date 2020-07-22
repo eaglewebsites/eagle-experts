@@ -3,7 +3,7 @@
  */
 module.exports = function () {
     var post_site = 'Post Site'
-    var post_url = 'https://hayspost.com'
+    var post_url = 'https://jcpost.com'
 
     return {
         title: 'Eagle Experts',
