@@ -1,1 +1,2 @@
 # Eagle Experts Page
+Site is static and hosted on netlify. Subdomains have their own branches and will only deploy from such. There is a central site called 'eagle-experts.netlify.app', but this was just for demo purposes. It will deploy when changes are commited to master branch. Branch 'jc' for example will only build for the site, 'experts.jcpost.com'
