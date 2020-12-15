@@ -38,7 +38,7 @@ const Expert = ({ data }) => {
                                 <div
                                     className="rounded-lg overlfow-hidden text-center text-4xl flex items-center justify-center mb-8 bg-center bg-cover bg-no-repeat"
                                     style={{
-                                        backgroundImage: `linear-gradient(to bottom, rgba(166, 46, 29, 0), ${accent_color}),url('https://img1.wsimg.com/isteam/ip/4c954b51-f8eb-4002-97f1-bb6eddeb13d4/80773713_780249395773994_8608299799143251968_n.jpg/:/rs=w:2460,h:1260,cg:true,m/cr=w:2460,h:1260,a:cc')`,
+                                        backgroundImage: `linear-gradient(to bottom, rgba(166, 46, 29, 0), ${accent_color}),url(${background_image})`,
                                     }}
                                 >
                                     <div>
@@ -244,7 +244,6 @@ const Expert = ({ data }) => {
                                                 fill="none"
                                                 strokeLinecap="round"
                                                 strokeLinejoin="round"
-                                                class="css-i6dzq1"
                                             >
                                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                                                 <polyline points="22,6 12,13 2,6"></polyline>
@@ -341,7 +340,6 @@ export const getServerSideProps = async (context) => {
             youtube: 'https://www.youtube.com/channel/UCXnC4Wj7Ikd9iWC45qm9Fdw',
             instagram:
                 'https://www.instagram.com/explore/locations/285630308622879/elite-academy-of-martial-arts/?hl=en',
-            twitter: null,
             website: 'https://eliteacademyma.com/',
         },
         phone: '785-430-4200',
