@@ -11,6 +11,9 @@ Data is stored on DynamoDB. More about the primary key structure below.
 
 ## Development
 
+Create a file called `.env.local` and add `NEXT_PUBLIC_SITE=JC` for example.
 `npm run dev`
 
 ## Production
+
+Next has the build plugin that coverts SSR pages to lambda functions defined in `netlify.toml`
