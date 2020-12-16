@@ -11,7 +11,16 @@ Data is stored on DynamoDB. More about the primary key structure below.
 
 ## Development
 
-Create a file called `.env.local` and add `NEXT_PUBLIC_SITE=JC` for example.
+Create a file called `.env.local` and add `NEXT_PUBLIC_SITE=JC` for example. There are three currently and need to be set in next environment variables as well.
+
+Example `.env` file
+
+```
+NEXT_PUBLIC_SITE=JC
+NEXT_PUBLIC_POST_SITE_TITLE="JC Post"
+NEXT_PUBLIC_POST_SITE_URL=https://jcpost.com
+```
+
 `npm run dev`
 
 ## Production

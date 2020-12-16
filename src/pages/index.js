@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Navbar from '@/components/navbar'
 
@@ -6,7 +6,7 @@ const Index = () => {
     const [isLoading, setLoading] = useState(false)
     const [experts, setExperts] = useState([])
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         fetchData().then(({ data }) => {
             setExperts(data)
         })
@@ -42,13 +42,13 @@ const Index = () => {
                     </strong>
                 </p>
             </section>
-            <section class="container mx-auto my-12 p-4">
-                <h2 class="text-2xl md:text-4xl uppercase text-center font-light tracking-wide mb-4">
+            <section className="container mx-auto my-12 p-4">
+                <h2 className="text-2xl md:text-4xl uppercase text-center font-light tracking-wide mb-4">
                     Businesses Committed to Improve Everyday Living
                 </h2>
-                <p class="text-center text-lg antialiased">Tap on a business to learn more</p>
+                <p className="text-center text-lg antialiased">Tap on a business to learn more</p>
             </section>
-            <section class="max-w-6xl mx-auto my-12">
+            <section className="max-w-6xl mx-auto my-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4">
                     <Link href="/#">
                         <a

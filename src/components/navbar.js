@@ -17,10 +17,16 @@ const Navbar = () => {
             target: '_self',
         },
         {
-            title: 'Post Site',
+            title: process.env.NEXT_PUBLIC_POST_SITE_TITLE,
             icon: '🗞',
-            url: '',
+            url: process.env.NEXT_PUBLIC_POST_SITE_URL,
             target: '_blank',
+        },
+        {
+            title: 'Login',
+            icon: '🔐',
+            url: '/admin',
+            target: '_self',
         },
     ])
 
@@ -44,7 +50,10 @@ const Navbar = () => {
                     <div className="hidden md:grid grid-flow-col divide-x-2 divide-blue-500">
                         {links.map((item, index) => (
                             <Link href={item.url} key={index}>
-                                <a className="text-white hover:underline tracking-wide px-4">
+                                <a
+                                    className="text-white hover:underline tracking-wide px-4"
+                                    target={item.target}
+                                >
                                     {item.title}
                                 </a>
                             </Link>
@@ -83,7 +92,7 @@ const Navbar = () => {
                     <div className="divide-y-2 border-b-2 flex flex-col">
                         {links.map((item, index) => (
                             <Link href={item.url} key={index}>
-                                <a className="tracking-wide p-4">
+                                <a className="tracking-wide p-4" target={item.target}>
                                     <span className="mr-2">{item.icon}</span>
                                     {item.title}
                                 </a>
