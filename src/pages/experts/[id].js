@@ -334,7 +334,7 @@ export const getServerSideProps = async (context) => {
         accent_color: '#ab2b20',
         background_image:
             'https://img1.wsimg.com/isteam/ip/4c954b51-f8eb-4002-97f1-bb6eddeb13d4/80773713_780249395773994_8608299799143251968_n.jpg/:/rs=w:2460,h:1260,cg:true,m/cr=w:2460,h:1260,a:cc',
-        description: 'Long ass description',
+        description: 'Really long description',
         social_links: {
             facebook: 'https://www.facebook.com/EliteacademyMA',
             youtube: 'https://www.youtube.com/channel/UCXnC4Wj7Ikd9iWC45qm9Fdw',
