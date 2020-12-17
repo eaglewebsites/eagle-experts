@@ -1,12 +1,12 @@
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import AdminLayout from '@/components/adminLayout'
 
-const Admin = () => {
+const Expert = () => {
     return (
         <AdminLayout>
-            <div>Admin Home Screen</div>
+            <div>Expert admin</div>
         </AdminLayout>
     )
 }
 
-export default withAuthenticator(Admin)
+export default withAuthenticator(Expert)
