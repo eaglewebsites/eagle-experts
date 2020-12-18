@@ -21,7 +21,7 @@ const Admin = () => {
 
     const sendTest = () => {
         const url = '/api/create'
-        var bearer = 'Bearer ' + user.idToken.jwtToken
+        var bearer = user.idToken.jwtToken
         fetch(url, {
             method: 'GET',
             withCredentials: true,

@@ -21,6 +21,8 @@
         "@aws-amplify/ui-react": "^0.2.32",
         "aws-amplify": "^3.3.12",
         "aws-sdk": "^2.810.0",
+        "jsonwebtoken": "^8.5.1",
+        "jwk-to-pem": "^2.0.4",
         "nanoid": "^3.1.20",
         "next": "^10.0.3",
         "react": "^17.0.1",
