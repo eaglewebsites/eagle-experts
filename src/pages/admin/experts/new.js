@@ -1,9 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import AdminLayout from '@/components/adminLayout'
 import { useRouter } from 'next/router'
 import fields from '@/utils/fields'
 import { nanoid } from 'nanoid'
+// Import the Slate editor factory.
+import { createEditor, Editor } from 'slate'
+// Import the Slate components and React plugin.
+import { Slate, Editable, withReact, useSlate } from 'slate-react'
 
 const socials = ['facebook', 'youtube', 'twitter', 'instagram', 'website']
 const weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
@@ -14,8 +18,20 @@ const NewExpert = () => {
     const [expert, setExpert] = useState({
         ...fields,
         id: `ACTIVE#EXPERT#${nanoid()}`,
-        location: location.toUpperCase(),
+        description: [
+            {
+                type: 'paragraph',
+                children: [{ text: '' }],
+            },
+        ],
     })
+
+    useEffect(() => {
+        setExpert({
+            ...expert,
+            location: location,
+        })
+    }, [location])
 
     return (
         <AdminLayout>
@@ -38,7 +54,18 @@ const NewExpert = () => {
                 />
                 <ImageUpload label="Logo" />
                 <ImageUpload label="Background Image" />
-                <RichText label="Description" />
+                {/* <Slate
+                    editor={editor}
+                    value={expert.description}
+                    onChange={(newValue) => setExpert({ ...expert, description: newValue })}
+                >
+                    <Editable />
+                </Slate> */}
+                <RichText
+                    label="Description"
+                    value={expert.description}
+                    onChange={(newValue) => setExpert({ ...expert, description: newValue })}
+                />
                 <Label value="Social Items" />
                 <div className="ml-8">
                     {socials.map((item) => (
@@ -121,13 +148,105 @@ const ImageUpload = ({ label }) => {
     )
 }
 
-const RichText = ({ label }) => {
+const RichText = ({ label, value, onChange }) => {
+    // Create a Slate editor object that won't change across renders.
+    const editor = useMemo(() => withReact(createEditor()), [])
+
+    // Define a rendering function based on the element passed to `props`. We use
+    // `useCallback` here to memoize the function for subsequent renders.
+    const renderElement = useCallback((props) => {
+        switch (props.element.type) {
+            case 'code':
+                return <CodeElement {...props} />
+            default:
+                return <DefaultElement {...props} />
+        }
+    }, [])
+
+    const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
+
     return (
-        <div className="flex flex-col">
+        <div>
             <Label value={label} />
-            <div className="h-24 bg-orange-100">Rich text</div>
+            <Slate editor={editor} value={value} onChange={(newValue) => onChange(newValue)}>
+                <MarkButton format="bold" title="Bold" />
+                <Editable
+                    placeholder="Enter some text…"
+                    renderElement={renderElement}
+                    renderLeaf={renderLeaf}
+                    onKeyDown={(event) => {
+                        if (event.key === '&') {
+                            event.preventDefault()
+                            editor.insertText('and')
+                        }
+                    }}
+                />
+            </Slate>
         </div>
     )
+}
+
+const Leaf = ({ attributes, children, leaf }) => {
+    if (leaf.bold) {
+        children = <strong>{children}</strong>
+    }
+
+    if (leaf.code) {
+        children = <code>{children}</code>
+    }
+
+    if (leaf.italic) {
+        children = <em>{children}</em>
+    }
+
+    if (leaf.underline) {
+        children = <u>{children}</u>
+    }
+
+    return <span {...attributes}>{children}</span>
+}
+
+const toggleMark = (editor, format) => {
+    const isActive = isMarkActive(editor, format)
+
+    if (isActive) {
+        Editor.removeMark(editor, format)
+    } else {
+        Editor.addMark(editor, format, true)
+    }
+}
+
+const isMarkActive = (editor, format) => {
+    const marks = Editor.marks(editor)
+    return marks ? marks[format] === true : false
+}
+
+const MarkButton = ({ format, title }) => {
+    const editor = useSlate()
+    return (
+        <button
+            active={isMarkActive(editor, format)}
+            onMouseDown={(event) => {
+                event.preventDefault()
+                toggleMark(editor, format)
+            }}
+        >
+            {title}
+        </button>
+    )
+}
+
+// Define a React component renderer for our code blocks.
+const CodeElement = (props) => {
+    return (
+        <pre {...props.attributes}>
+            <code>{props.children}</code>
+        </pre>
+    )
+}
+
+const DefaultElement = (props) => {
+    return <p {...props.attributes}>{props.children}</p>
 }
 
 export default withAuthenticator(NewExpert)
