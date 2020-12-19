@@ -2,6 +2,12 @@ const AWS = require('aws-sdk')
 var jwt = require('jsonwebtoken')
 var jwkToPem = require('jwk-to-pem')
 
+AWS.config.update({
+    region: 'us-east-1',
+})
+var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider()
+
+// https://cognito-idp.us-east-1.amazonaws.com/us-east-1_C71tInq1x/.well-known/jwks.json
 const jwks = {
     keys: [
         {
@@ -33,10 +39,20 @@ const getKeyId = (jwks, keyId) => {
 }
 
 const handler = async (req, res) => {
-    const unsafe_token = jwt.decode(req.headers.authorization, { complete: true })
+    const bearer_token = req.headers.authorization.replace('Bearer ', '')
+
+    const unsafe_token = jwt.decode(bearer_token, {
+        complete: true,
+    })
+
+    if (!unsafe_token || !unsafe_token.header) {
+        return res.json({
+            message: 'You are not allowed to access this resource',
+        })
+    }
 
     jwt.verify(
-        req.headers.authorization,
+        bearer_token,
         jwkToPem(getKeyId(jwks, unsafe_token.header.kid)),
         { algorithms: ['RS256'] },
         function (err, decoded) {
@@ -46,10 +62,27 @@ const handler = async (req, res) => {
                     message: 'You are not allowed to access this resource',
                 })
             } else {
-                console.log('this was verified')
-                res.json({
-                    message: 'User is authorized',
-                    decoded,
+                // user is authorized
+                // var params = {
+                //     UserPoolId: 'us-east-1_C71tInq1x' /* required */,
+                //     Username: decoded.username /* required */,
+                // }
+                var params = {
+                    AccessToken: bearer_token,
+                }
+                return cognitoidentityserviceprovider.getUser(params, function (err, data) {
+                    if (err) {
+                        console.log(err)
+                        return res.json({
+                            message: 'something went wrong getting user',
+                        })
+                    } else {
+                        return res.json({
+                            message: 'User is authorized',
+                            data,
+                            decoded,
+                        })
+                    }
                 })
             }
         }

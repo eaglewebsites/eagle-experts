@@ -1,7 +1,28 @@
+import { useState, useEffect } from 'react'
 import Navbar from '@/components/navbar'
 import AdminNav from '@/components/adminNav'
+import { Auth } from 'aws-amplify'
+import configaws from '@/utils/config-aws'
 
 const AdminLayout = ({ children }) => {
+    const [user, setUser] = useState({})
+
+    useEffect(() => {
+        fetchUser().then((user) => {
+            setUser(user)
+            configaws(user.idToken)
+        })
+    }, [false])
+
+    const fetchUser = async () => {
+        try {
+            const user = await Auth.currentSession()
+            return user
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     return (
         <>
             <Navbar />

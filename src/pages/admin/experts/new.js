@@ -8,6 +8,7 @@ import { nanoid } from 'nanoid'
 import { createEditor, Editor } from 'slate'
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact, useSlate } from 'slate-react'
+import insert from '@/utils/insert'
 
 const socials = ['facebook', 'youtube', 'twitter', 'instagram', 'website']
 const weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
@@ -17,7 +18,7 @@ const NewExpert = () => {
     const { location } = router.query
     const [expert, setExpert] = useState({
         ...fields,
-        id: `ACTIVE#EXPERT#${nanoid()}`,
+        pk: `ACTIVE#EXPERT#${nanoid()}`,
         description: [
             {
                 type: 'paragraph',
@@ -29,14 +30,21 @@ const NewExpert = () => {
     useEffect(() => {
         setExpert({
             ...expert,
-            location: location,
+            sk: location,
         })
     }, [location])
+
+    const createExpert = () => {
+        insert(expert).then((data) => {
+            console.log(data)
+        })
+    }
 
     return (
         <AdminLayout>
             <div className="mb-24">
                 <div className="text-3xl font-bold capitalize mb-8">New {location} Expert</div>
+                <button onClick={() => createExpert()}>Create Expert</button>
                 <TextInput
                     label="title"
                     value={expert.title}

@@ -1,6 +1,6 @@
 export default {
-    id: '',
-    location: '',
+    pk: '',
+    sk: '',
     title: '',
     subtitle: '',
     accent_color: '',
