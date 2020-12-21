@@ -9,14 +9,19 @@ import { createEditor, Editor } from 'slate'
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact, useSlate } from 'slate-react'
 import insert from '@/utils/insert'
+import * as Icon from 'react-feather'
 
+/**
+ * Should use the fields utility, being lazy for now
+ */
 const socials = ['facebook', 'youtube', 'twitter', 'instagram', 'website']
 const weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
 const NewExpert = () => {
     const router = useRouter()
     const { location } = router.query
-    const [expert, setExpert] = useState({
+
+    const defaultState = {
         ...fields,
         pk: `ACTIVE#EXPERT#${nanoid()}`,
         description: [
@@ -25,7 +30,9 @@ const NewExpert = () => {
                 children: [{ text: '' }],
             },
         ],
-    })
+    }
+
+    const [expert, setExpert] = useState(defaultState)
 
     useEffect(() => {
         setExpert({
@@ -36,15 +43,25 @@ const NewExpert = () => {
 
     const createExpert = () => {
         insert(expert).then((data) => {
-            console.log(data)
+            alert('New expert was created successfully.')
+            setExpert({
+                ...defaultState,
+            })
         })
     }
 
     return (
         <AdminLayout>
             <div className="mb-24">
-                <div className="text-3xl font-bold capitalize mb-8">New {location} Expert</div>
-                <button onClick={() => createExpert()}>Create Expert</button>
+                <div className="flex justify-between items-center">
+                    <div className="text-3xl font-bold capitalize mb-8">New {location} Expert</div>
+                    <button
+                        onClick={() => createExpert()}
+                        className="text-center mb-4 px-6 py-2 bg-gradient-to-b from-green-400 to-green-500 text-white rounded hover:from-green-500 hover:to-green-400 flex flex-row items-center shadow-lg"
+                    >
+                        <Icon.Plus className="mr-2" /> Create Expert
+                    </button>
+                </div>
                 <TextInput
                     label="title"
                     value={expert.title}
@@ -62,13 +79,6 @@ const NewExpert = () => {
                 />
                 <ImageUpload label="Logo" />
                 <ImageUpload label="Background Image" />
-                {/* <Slate
-                    editor={editor}
-                    value={expert.description}
-                    onChange={(newValue) => setExpert({ ...expert, description: newValue })}
-                >
-                    <Editable />
-                </Slate> */}
                 <RichText
                     label="Description"
                     value={expert.description}
@@ -76,14 +86,15 @@ const NewExpert = () => {
                 />
                 <Label value="Social Items" />
                 <div className="ml-8">
-                    {socials.map((item) => (
+                    {socials.map((item, index) => (
                         <TextInput
+                            key={index}
                             label={item}
-                            value={expert.business_hours[item]}
+                            value={expert.social_links[item]}
                             onChange={(value) =>
                                 setExpert({
                                     ...expert,
-                                    business_hours: { ...expert.business_hours, [item]: value },
+                                    social_links: { ...expert.social_links, [item]: value },
                                 })
                             }
                         />
@@ -106,8 +117,9 @@ const NewExpert = () => {
                 />
                 <Label value="Business Hours" />
                 <div className="ml-8">
-                    {weekdays.map((item) => (
+                    {weekdays.map((item, index) => (
                         <TextInput
+                            key={index}
                             label={item}
                             value={expert.business_hours[item]}
                             onChange={(value) =>

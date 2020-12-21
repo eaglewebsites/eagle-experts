@@ -1,6 +1,7 @@
 export default {
     pk: '',
     sk: '',
+    type: '',
     title: '',
     subtitle: '',
     accent_color: '',
@@ -10,6 +11,7 @@ export default {
     social_links: {
         facebook: '',
         youtube: '',
+        twitter: '',
         instagram: '',
         website: '',
     },
