@@ -7,20 +7,19 @@ const Index = () => {
     const [experts, setExperts] = useState([])
 
     useEffect(() => {
+        setLoading(true)
         fetchData().then(({ data }) => {
             setExperts(data)
+            setLoading(false)
         })
     }, [])
 
     const fetchData = async () => {
         try {
-            return {
-                data: [
-                    {
-                        title: 'example expert',
-                    },
-                ],
-            }
+            const experts = await fetch(
+                `/api/public/list?location=${process.env.NEXT_PUBLIC_SITE}`
+            ).then((response) => response.json())
+            return experts
         } catch (err) {
             console.log(err)
             alert('Something went wrong getting data. Please try again.')
@@ -49,26 +48,30 @@ const Index = () => {
                 <p className="text-center text-lg antialiased">Tap on a business to learn more</p>
             </section>
             <section className="max-w-6xl mx-auto my-12">
+                {isLoading && (
+                    <div className="text-center py-12 text-gray-800 w-full">Loading Experts...</div>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4">
-                    <Link href="/#">
-                        <a
-                            href="#"
-                            className="transition duration-150 ease-in-out flex justify-between rounded-lg overflow-hidden shadow-lg md:border-4 md:border-white hover:border-blue-500 bg-white"
-                        >
-                            <img
-                                className="w-32 md:w-48 object-cover"
-                                src="https://img1.wsimg.com/isteam/ip/4c954b51-f8eb-4002-97f1-bb6eddeb13d4/80773713_780249395773994_8608299799143251968_n.jpg/:/rs=w:2460,h:1260,cg:true,m/cr=w:2460,h:1260,a:cc"
-                            />
-                            <div className="flex-1 p-4 bg-white">
-                                <p className="text-center text-xl">Elite Academy of Martial Arts</p>
-                                <div className="h-1 bg-orange-400 w-12 mx-auto rounded-full"></div>
-                                <img
-                                    className="mx-auto h-32 pt-3"
-                                    src="https://experts.jcpost.com/img/elite_academy/Elite_Logo.jpg"
-                                />
-                            </div>
-                        </a>
-                    </Link>
+                    {!isLoading &&
+                        experts &&
+                        experts.map((item, index) => (
+                            <Link
+                                href={`/experts/${item.pk.replace(/ACTIVE#EXPERT#/g, '')}`}
+                                key={index}
+                            >
+                                <a className="transition duration-150 ease-in-out flex justify-between rounded-lg overflow-hidden shadow-lg md:border-4 md:border-white hover:border-blue-500 bg-white">
+                                    <img
+                                        className="w-32 md:w-48 object-cover"
+                                        src={item.background_image}
+                                    />
+                                    <div className="flex-1 p-4 bg-white">
+                                        <p className="text-center text-xl">{item.title}</p>
+                                        <div className="h-1 bg-orange-400 w-12 mx-auto rounded-full"></div>
+                                        <img className="mx-auto h-32 pt-3" src={item.logo} />
+                                    </div>
+                                </a>
+                            </Link>
+                        ))}
                 </div>
             </section>
         </>

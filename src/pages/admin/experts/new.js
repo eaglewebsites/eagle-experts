@@ -10,6 +10,7 @@ import { createEditor, Editor } from 'slate'
 import { Slate, Editable, withReact, useSlate } from 'slate-react'
 import insert from '@/utils/insert'
 import * as Icon from 'react-feather'
+import { Auth } from 'aws-amplify'
 
 /**
  * Should use the fields utility, being lazy for now
@@ -42,13 +43,36 @@ const NewExpert = () => {
     }, [location])
 
     const createExpert = () => {
-        insert(expert).then((data) => {
-            alert('New expert was created successfully.')
-            setExpert({
-                ...defaultState,
+        Auth.currentSession().then((data) => {
+            const token = data.getAccessToken().getJwtToken()
+            fetch(`/api/admin/create`, {
+                method: 'POST',
+                withCredentials: true,
+                credentials: 'include',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(expert),
             })
+                .then((response) => {
+                    return response.json()
+                })
+                .then((data) => {
+                    console.log(data)
+                    alert('New expert was created successfully.')
+                    setExpert({
+                        ...defaultState,
+                    })
+                })
         })
     }
+    // insert(expert).then((data) => {
+    //     alert('New expert was created successfully.')
+    //     setExpert({
+    //         ...defaultState,
+    //     })
+    // })
 
     return (
         <AdminLayout>

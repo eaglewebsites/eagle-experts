@@ -337,14 +337,12 @@ export const getServerSideProps = async (context) => {
         },
     })
 
-    console.log(context.params.id)
-
     const Dynamo = new AWS.DynamoDB.DocumentClient()
 
     let params = {
         TableName: 'eagle-experts',
         Key: {
-            pk: 'ACTIVE#EXPERT#L9whU8g6adrzXYnMuB7X4',
+            pk: `ACTIVE#EXPERT#${context.params.id}`,
             sk: process.env.NEXT_PUBLIC_SITE,
         },
     }
@@ -416,7 +414,6 @@ export const getServerSideProps = async (context) => {
     // }
 
     // Pass data to the page via props
-    console.log(response)
     return {
         props: {
             response: response.Item,

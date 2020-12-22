@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import * as Icon from 'react-feather'
 import queryExperts from '@/utils/queryExperts'
+import { Auth } from 'aws-amplify'
 
 const Location = () => {
     const router = useRouter()
@@ -16,21 +17,38 @@ const Location = () => {
     useEffect(() => {
         setLoading(true)
         if (location) {
-            fetchExperts(location).then(({ response = [] }) => {
-                console.log('retrieved experts...')
-                setLoading(false)
-                setExperts(response)
+            Auth.currentSession().then((data) => {
+                const token = data.getAccessToken().getJwtToken()
+                fetchExperts(location, token).then((data) => {
+                    if (data.error) {
+                        alert('Not authorized to this resource')
+                    } else {
+                        setExperts(data.data)
+                    }
+                    setLoading(false)
+                })
             })
         }
     }, [location])
 
-    const fetchExperts = async (location) => {
+    const fetchExperts = async (location, token) => {
         try {
             /**
              * Fetch data from dynamo
              */
+
             console.log(`fetching data for ${location}...`)
-            const experts = await queryExperts(location.toUpperCase(), true)
+            const experts = await fetch(`/api/admin/list?location=${location.toUpperCase()}`, {
+                method: 'GET',
+                withCredentials: true,
+                credentials: 'include',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            }).then((response) => {
+                return response.json()
+            })
             return experts
         } catch (err) {
             console.log(err)
@@ -49,24 +67,30 @@ const Location = () => {
             </Link>
             {!loading && experts && (
                 <div className="rounded bg-white overflow-hidden divide-y-2 divide-dashed divide-blue-100 shadow-xl">
-                    {experts.map((item, index) => (
-                        <Link key={index} href={`/admin/experts/${item.pk.replace(/#/g, '%23')}`}>
-                            <a className="px-4 py-3 flex justify-between items-center hover:bg-blue-200">
-                                <div>{item.title}</div>
-                                <div>
-                                    <div
-                                        className={`${
-                                            item.pk.includes('ACTIVE#')
-                                                ? 'bg-green-500 text-green-50'
-                                                : 'bg-red-500 text-red-50'
-                                        } rounded-full shadow px-3 text-sm py-1`}
-                                    >
-                                        {item.pk.includes('ACTIVE#') ? 'Active' : 'Pending'}
+                    {experts &&
+                        experts.map((item, index) => (
+                            <Link
+                                key={index}
+                                href={`/admin/experts/${item.pk.replace(/#/g, '%23')}?location=${
+                                    item.sk
+                                }`}
+                            >
+                                <a className="px-4 py-3 flex justify-between items-center hover:bg-blue-200">
+                                    <div>{item.title}</div>
+                                    <div>
+                                        <div
+                                            className={`${
+                                                item.pk.includes('ACTIVE#')
+                                                    ? 'bg-green-500 text-green-50'
+                                                    : 'bg-red-500 text-red-50'
+                                            } rounded-full shadow px-3 text-sm py-1`}
+                                        >
+                                            {item.pk.includes('ACTIVE#') ? 'Active' : 'Pending'}
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        </Link>
-                    ))}
+                                </a>
+                            </Link>
+                        ))}
                 </div>
             )}
         </AdminLayout>
