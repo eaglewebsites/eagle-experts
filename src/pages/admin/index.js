@@ -12,9 +12,7 @@ const Admin = () => {
 
     return (
         <AdminLayout>
-            <div>Admin Home Screen</div>
-            <button>Test send</button>
-            {user && <div>{JSON.stringify(user, null, 2)}</div>}
+            <div>Experts Admin</div>
         </AdminLayout>
     )
 }

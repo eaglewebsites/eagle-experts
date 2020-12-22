@@ -29,6 +29,8 @@ const handler = (req, res) => {
                     Item: {
                         pk: payload.pk,
                         sk: payload.sk.toUpperCase(),
+                        gsi1pk: payload.gsi1pk,
+                        gsi1sk: payload.gsi1sk,
                         type: 'EXPERT',
                         title: payload.title || 'UNTITLED',
                         subtitle: payload.subtitle || '',

@@ -331,10 +331,6 @@ const Expert = ({ response }) => {
 export const getServerSideProps = async (context) => {
     AWS.config.update({
         region: 'us-east-1',
-        credentials: {
-            accessKeyId: process.env.AWS_ACCESS_KEY,
-            secretAccessKey: process.env.AWS_SECRET_KEY,
-        },
     })
 
     const Dynamo = new AWS.DynamoDB.DocumentClient()
@@ -342,7 +338,7 @@ export const getServerSideProps = async (context) => {
     let params = {
         TableName: 'eagle-experts',
         Key: {
-            pk: `ACTIVE#EXPERT#${context.params.id}`,
+            pk: `EXPERT#${context.params.id}`,
             sk: process.env.NEXT_PUBLIC_SITE,
         },
     }

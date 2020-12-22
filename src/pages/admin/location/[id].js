@@ -80,12 +80,12 @@ const Location = () => {
                                     <div>
                                         <div
                                             className={`${
-                                                item.pk.includes('ACTIVE#')
+                                                item.gsi1sk.includes('ACTIVE#')
                                                     ? 'bg-green-500 text-green-50'
                                                     : 'bg-red-500 text-red-50'
                                             } rounded-full shadow px-3 text-sm py-1`}
                                         >
-                                            {item.pk.includes('ACTIVE#') ? 'Active' : 'Pending'}
+                                            {item.gsi1sk.includes('ACTIVE#') ? 'Active' : 'Pending'}
                                         </div>
                                     </div>
                                 </a>

@@ -22,8 +22,8 @@ const handler = async (req, res) => {
             TableName: 'eagle-experts',
             IndexName: 'gsi1',
             ExpressionAttributeNames: {
-                '#location': 'sk',
-                '#expert': 'pk',
+                '#location': 'gsi1pk',
+                '#expert': 'gsi1sk',
             },
             ExpressionAttributeValues: {
                 ':location': req.query.location,

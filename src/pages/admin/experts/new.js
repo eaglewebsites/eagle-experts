@@ -21,10 +21,11 @@ const weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'satur
 const NewExpert = () => {
     const router = useRouter()
     const { location } = router.query
+    const [expertStatus, setExpertStatus] = useState('ACTIVE')
 
     const defaultState = {
         ...fields,
-        pk: `ACTIVE#EXPERT#${nanoid()}`,
+        pk: `EXPERT#${nanoid()}`,
         description: [
             {
                 type: 'paragraph',
@@ -53,7 +54,11 @@ const NewExpert = () => {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(expert),
+                body: JSON.stringify({
+                    ...expert,
+                    gsi1pk: location.toUpperCase(),
+                    gsi1sk: `${expertStatus}#EXPERT#${nanoid()}`,
+                }),
             })
                 .then((response) => {
                     return response.json()
@@ -85,6 +90,15 @@ const NewExpert = () => {
                     >
                         <Icon.Plus className="mr-2" /> Create Expert
                     </button>
+                </div>
+                <div>
+                    <select
+                        value={expertStatus}
+                        onChange={(event) => setExpertStatus(event.target.value)}
+                    >
+                        <option value="ACTIVE">Active</option>
+                        <option value="PENDING">Pending</option>
+                    </select>
                 </div>
                 <TextInput
                     label="title"

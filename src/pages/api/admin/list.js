@@ -136,7 +136,7 @@ const handler = (req, res) => {
                     TableName: 'eagle-experts',
                     IndexName: 'gsi1',
                     ExpressionAttributeNames: {
-                        '#location': 'sk',
+                        '#location': 'gsi1pk',
                     },
                     ExpressionAttributeValues: {
                         ':location': req.query.location,
