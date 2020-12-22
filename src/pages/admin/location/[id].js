@@ -4,6 +4,7 @@ import AdminLayout from '@/components/adminLayout'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import * as Icon from 'react-feather'
+import queryExperts from '@/utils/queryExperts'
 
 const Location = () => {
     const router = useRouter()
@@ -15,9 +16,10 @@ const Location = () => {
     useEffect(() => {
         setLoading(true)
         if (location) {
-            fetchExperts(location).then((data) => {
+            fetchExperts(location).then(({ response = [] }) => {
+                console.log('retrieved experts...')
                 setLoading(false)
-                setExperts(data)
+                setExperts(response)
             })
         }
     }, [location])
@@ -28,23 +30,8 @@ const Location = () => {
              * Fetch data from dynamo
              */
             console.log(`fetching data for ${location}...`)
-            return [
-                {
-                    title: 'Elite Academy of Martial Arts',
-                    active: true,
-                    id: '1234',
-                },
-                {
-                    title: 'dfsa fsad fas fasasf',
-                    active: true,
-                    id: '123423234',
-                },
-                {
-                    title: 'TEStsetest',
-                    active: false,
-                    id: '123423333234',
-                },
-            ]
+            const experts = await queryExperts(location.toUpperCase(), true)
+            return experts
         } catch (err) {
             console.log(err)
             alert('something went wrong getting experts')
@@ -62,19 +49,19 @@ const Location = () => {
             </Link>
             {!loading && experts && (
                 <div className="rounded bg-white overflow-hidden divide-y-2 divide-dashed divide-blue-100 shadow-xl">
-                    {experts.map((item) => (
-                        <Link key={item.id} href={`/admin/experts/${item.id}`}>
+                    {experts.map((item, index) => (
+                        <Link key={index} href={`/admin/experts/${item.pk.replace(/#/g, '%23')}`}>
                             <a className="px-4 py-3 flex justify-between items-center hover:bg-blue-200">
                                 <div>{item.title}</div>
                                 <div>
                                     <div
                                         className={`${
-                                            item.active
+                                            item.pk.includes('ACTIVE#')
                                                 ? 'bg-green-500 text-green-50'
                                                 : 'bg-red-500 text-red-50'
                                         } rounded-full shadow px-3 text-sm py-1`}
                                     >
-                                        {item.active ? 'Active' : 'Pending'}
+                                        {item.pk.includes('ACTIVE#') ? 'Active' : 'Pending'}
                                     </div>
                                 </div>
                             </a>

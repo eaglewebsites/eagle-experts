@@ -21,4 +21,6 @@ const configureSDK = (idToken) => {
     }
 }
 
+export const DYNAMODB = new AWS.DynamoDB({ region: 'us-east-1', apiVersion: '2012-08-10' })
+
 export default configureSDK

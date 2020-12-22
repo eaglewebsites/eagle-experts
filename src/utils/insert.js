@@ -1,4 +1,5 @@
 let AWS = require('aws-sdk')
+import { DYNAMODB } from '@/utils/config-aws'
 
 const insert = async (payload = null) => {
     /**
@@ -10,7 +11,7 @@ const insert = async (payload = null) => {
         }
 
         var docClient = new AWS.DynamoDB({ region: AWS.config.region })
-        var params = {
+        let params = {
             TableName: 'eagle-experts',
             Item: {
                 pk: {
