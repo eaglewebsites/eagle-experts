@@ -33,8 +33,6 @@ const handler = (req, res) => {
                  */
                 const payload = req.body
 
-                console.log(payload)
-
                 let params = {
                     TableName: 'eagle-experts',
                     Key: {

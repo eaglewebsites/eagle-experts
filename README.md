@@ -19,6 +19,8 @@ Example `.env` file
 NEXT_PUBLIC_SITE=JC
 NEXT_PUBLIC_POST_SITE_TITLE="JC Post"
 NEXT_PUBLIC_POST_SITE_URL=https://jcpost.com
+ACCESS_KEY_ID=""
+SECRET_ACCESS_KEY=""
 ```
 
 `npm run dev`
