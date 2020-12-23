@@ -122,7 +122,7 @@ const Expert = () => {
         <AdminLayout>
             {loading && <div>Loading...</div>}
             {!loading && (
-                <div className="mb-24">
+                <div className="mb-24 space-y-6">
                     <div className="flex justify-between items-center">
                         <div className="text-3xl font-bold capitalize mb-8">Edit Expert</div>
                         <button
@@ -132,8 +132,10 @@ const Expert = () => {
                             <Icon.Check className="mr-2" /> Update
                         </button>
                     </div>
-                    <div>
+                    <div className="flex flex-col">
+                        <Label value="Status" />
                         <select
+                            className="w-32"
                             value={expertStatus}
                             onChange={(event) => {
                                 setExpertStatus(event.target.value)
@@ -161,7 +163,8 @@ const Expert = () => {
                         onChange={(value) => setExpert({ ...expert, subtitle: value })}
                     />
                     <TextInput
-                        label="Accent Color (Hex value)"
+                        label="Accent Color (Hex value) Leave blank for default"
+                        placeholder="#000000"
                         value={expert.accent_color}
                         onChange={(value) => setExpert({ ...expert, accent_color: value })}
                     />
@@ -175,15 +178,18 @@ const Expert = () => {
                         value={expert.background_image}
                         onUploadComplete={(url) => setExpert({ ...expert, background_image: url })}
                     />
-                    <RichText
-                        label="Description"
-                        value={expert.description}
-                        onChange={(newValue) => setExpert({ ...expert, description: newValue })}
-                    />
-                    <Label value="Social Items" />
-                    <div className="ml-8">
+                    <div className="mb-8">
+                        <RichText
+                            label="Blog"
+                            value={expert.description}
+                            onChange={(newValue) => setExpert({ ...expert, description: newValue })}
+                        />
+                    </div>
+                    <div className="ml-8 mt-8 space-y-4">
+                        <Label value="Social Items" />
                         {socials.map((item, index) => (
                             <TextInput
+                                placeholder="https://"
                                 key={index}
                                 label={item}
                                 value={expert.social_links[item]}
@@ -212,9 +218,10 @@ const Expert = () => {
                         onChange={(value) => setExpert({ ...expert, email: value })}
                     />
                     <Label value="Business Hours" />
-                    <div className="ml-8">
+                    <div className="ml-8 space-y-4">
                         {weekdays.map((item, index) => (
                             <TextInput
+                                placeholder="8:00AM - 5:00PM"
                                 key={index}
                                 label={item}
                                 value={expert.business_hours[item]}
@@ -247,10 +254,11 @@ const Label = ({ value }) => (
     <label className="uppercase tracking-wide text-gray-700">{value}</label>
 )
 
-const TextInput = ({ label, value, onChange }) => (
+const TextInput = ({ label, value, onChange, placeholder = '' }) => (
     <div className="flex flex-col">
         <Label value={label} />
         <input
+            placeholder={placeholder}
             className="p-2 rounded border border-gray-300 focus:border-blue-500 bg-gray-50 focus:bg-white outline-none"
             value={value}
             onChange={(event) => onChange(event.target.value)}

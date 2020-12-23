@@ -12,13 +12,8 @@ const AdminNav = () => {
             icon: <Icon.Home />,
         },
         {
-            title: 'JC',
+            title: 'JC / Manhattan',
             link: '/admin/location/jc',
-            icon: <Icon.MapPin />,
-        },
-        {
-            title: 'Manhattan',
-            link: '/admin/location/manhattan',
             icon: <Icon.MapPin />,
         },
     ]
