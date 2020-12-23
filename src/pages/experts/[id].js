@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import Navbar from '@/components/navbar'
-import { DynamoDB } from 'aws-sdk'
 const AWS = require('aws-sdk')
 
 const Expert = ({ response }) => {
@@ -373,6 +372,10 @@ const Expert = ({ response }) => {
 export const getServerSideProps = async (context) => {
     AWS.config.update({
         region: 'us-east-1',
+        credentials: {
+            accessKeyId: process.env.ACCESS_KEY_ID,
+            secretAccessKey: process.env.SECRET_ACCESS_KEY,
+        },
     })
 
     const Dynamo = new AWS.DynamoDB.DocumentClient()
