@@ -38,16 +38,16 @@ const Expert = ({ response }) => {
                         <div className="md:col-span-5 md:pr-12">
                             <div className="grid grid-cols-1 gap-4">
                                 <div
-                                    className="rounded-lg overlfow-hidden text-center text-4xl flex items-center justify-center mb-8 bg-center bg-cover bg-no-repeat"
+                                    className="rounded-lg overlfow-hidden text-center text-4xl flex items-center justify-center mb-8 bg-center bg-cover bg-no-repeat px-3"
                                     style={{
                                         backgroundImage: `linear-gradient(to bottom, rgba(166, 46, 29, 0), ${
                                             accent_color ? accent_color : '#000000'
                                         }),url(${background_image})`,
                                     }}
                                 >
-                                    <div>
+                                    <div className="rounded-lg overflow-hidden">
                                         <img
-                                            className="shadow-2xl rounded-lg border-8 border-white my-24 w-64 h-64"
+                                            className="shadow-2xl rounded-lg overflow-hidden my-24 w-auto h-64 object-contain "
                                             src={logo}
                                             alt="Elite Academy Logo"
                                         />
