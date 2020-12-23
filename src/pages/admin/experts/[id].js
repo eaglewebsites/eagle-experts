@@ -6,15 +6,17 @@ import { useRouter } from 'next/router'
 import { Auth } from 'aws-amplify'
 import * as Icon from 'react-feather'
 // Import the Slate editor factory.
-import { createEditor, Editor } from 'slate'
+import { createEditor, Editor, Transforms, Range, Element as SlateElement } from 'slate'
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact, useSlate } from 'slate-react'
-
+import isUrl from 'is-url'
 /**
  * Should use the fields utility, being lazy for now
  */
 const socials = ['facebook', 'youtube', 'twitter', 'instagram', 'website']
 const weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+
+const LIST_TYPES = ['numbered-list', 'bulleted-list']
 
 const Expert = () => {
     const router = useRouter()
@@ -76,7 +78,6 @@ const Expert = () => {
             const token = data.getAccessToken().getJwtToken()
             updateExpert(token).then((data) => {
                 alert('Expert was updated.')
-                router.push(`/admin/location/${location}`)
             })
         })
     }
@@ -251,39 +252,124 @@ const ImageUpload = ({ label }) => {
 
 const RichText = ({ label, value, onChange }) => {
     // Create a Slate editor object that won't change across renders.
-    const editor = useMemo(() => withReact(createEditor()), [])
+    const editor = useMemo(() => withLinks(withReact(createEditor())), [])
 
     // Define a rendering function based on the element passed to `props`. We use
     // `useCallback` here to memoize the function for subsequent renders.
-    const renderElement = useCallback((props) => {
-        switch (props.element.type) {
-            case 'code':
-                return <CodeElement {...props} />
-            default:
-                return <DefaultElement {...props} />
-        }
-    }, [])
+    // const renderElement = useCallback((props) => {
+    //     switch (props.element.type) {
+    //         case 'code':
+    //             return <CodeElement {...props} />
+    //         default:
+    //             return <DefaultElement {...props} />
+    //     }
+    // }, [])
 
+    const renderElement = useCallback((props) => <Element {...props} />, [])
     const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
 
     return (
         <div>
             <Label value={label} />
-            <Slate editor={editor} value={value} onChange={(newValue) => onChange(newValue)}>
-                <MarkButton format="bold" title="Bold" />
-                <Editable
-                    placeholder="Enter some text…"
-                    renderElement={renderElement}
-                    renderLeaf={renderLeaf}
-                    onKeyDown={(event) => {
-                        if (event.key === '&') {
-                            event.preventDefault()
-                            editor.insertText('and')
-                        }
-                    }}
-                />
-            </Slate>
+            <div>
+                <Slate editor={editor} value={value} onChange={(newValue) => onChange(newValue)}>
+                    <div className="flex flex-row space-x-3 items-center py-3">
+                        <MarkButton format="bold" icon={<Icon.Bold size={24} />} />
+                        <BlockButton format="heading-one" icon={<Icon.Type size={24} />} />
+                        <LinkButton />
+                    </div>
+                    <Editable
+                        className="bg-white rounded p-3"
+                        spellCheck
+                        placeholder="Enter some text…"
+                        renderElement={renderElement}
+                        renderLeaf={renderLeaf}
+                        onKeyDown={(event) => {
+                            if (event.key === '&') {
+                                event.preventDefault()
+                                editor.insertText('and')
+                            }
+                        }}
+                    />
+                </Slate>
+            </div>
         </div>
+    )
+}
+
+const toggleBlock = (editor, format) => {
+    const isActive = isBlockActive(editor, format)
+    const isList = LIST_TYPES.includes(format)
+
+    Transforms.unwrapNodes(editor, {
+        match: (n) =>
+            LIST_TYPES.includes(!Editor.isEditor(n) && SlateElement.isElement(n) && n.type),
+        split: true,
+    })
+    const newProperties = {
+        type: isActive ? 'paragraph' : isList ? 'list-item' : format,
+    }
+    Transforms.setNodes(editor, newProperties)
+
+    if (!isActive && isList) {
+        const block = { type: format, children: [] }
+        Transforms.wrapNodes(editor, block)
+    }
+}
+
+const Element = ({ attributes, children, element }) => {
+    switch (element.type) {
+        case 'block-quote':
+            return <blockquote {...attributes}>{children}</blockquote>
+        case 'bulleted-list':
+            return <ul {...attributes}>{children}</ul>
+        case 'heading-one':
+            return (
+                <h1 className="text-3xl leading-loose" {...attributes}>
+                    {children}
+                </h1>
+            )
+        case 'heading-two':
+            return <h2 {...attributes}>{children}</h2>
+        case 'list-item':
+            return <li {...attributes}>{children}</li>
+        case 'numbered-list':
+            return <ol {...attributes}>{children}</ol>
+        case 'link':
+            return (
+                <a className="text-blue-500 hover:underline" {...attributes} href={element.url}>
+                    {children}
+                </a>
+            )
+        default:
+            return (
+                <p className="leading-loose" {...attributes}>
+                    {children}
+                </p>
+            )
+    }
+}
+
+const isBlockActive = (editor, format) => {
+    const [match] = Editor.nodes(editor, {
+        match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === format,
+    })
+
+    return !!match
+}
+
+const BlockButton = ({ format, icon }) => {
+    const editor = useSlate()
+    return (
+        <button
+            className={isBlockActive(editor, format) ? 'text-blue-400' : ''}
+            onMouseDown={(event) => {
+                event.preventDefault()
+                toggleBlock(editor, format)
+            }}
+        >
+            {icon}
+        </button>
     )
 }
 
@@ -322,17 +408,102 @@ const isMarkActive = (editor, format) => {
     return marks ? marks[format] === true : false
 }
 
-const MarkButton = ({ format, title }) => {
+const MarkButton = ({ format, icon }) => {
     const editor = useSlate()
     return (
         <button
-            active={isMarkActive(editor, format)}
+            className={isMarkActive(editor, format) ? 'text-blue-400' : ''}
             onMouseDown={(event) => {
                 event.preventDefault()
                 toggleMark(editor, format)
             }}
         >
-            {title}
+            {icon}
+        </button>
+    )
+}
+
+const insertLink = (editor, url) => {
+    if (editor.selection) {
+        wrapLink(editor, url)
+    }
+}
+
+const isLinkActive = (editor) => {
+    const [link] = Editor.nodes(editor, {
+        match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'link',
+    })
+    return !!link
+}
+
+const unwrapLink = (editor) => {
+    Transforms.unwrapNodes(editor, {
+        match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'link',
+    })
+}
+
+const wrapLink = (editor, url) => {
+    if (isLinkActive(editor)) {
+        unwrapLink(editor)
+    }
+
+    const { selection } = editor
+    const isCollapsed = selection && Range.isCollapsed(selection)
+    const link = {
+        type: 'link',
+        url,
+        children: isCollapsed ? [{ text: url }] : [],
+    }
+
+    if (isCollapsed) {
+        Transforms.insertNodes(editor, link)
+    } else {
+        Transforms.wrapNodes(editor, link, { split: true })
+        Transforms.collapse(editor, { edge: 'end' })
+    }
+}
+
+const withLinks = (editor) => {
+    const { insertData, insertText, isInline } = editor
+
+    editor.isInline = (element) => {
+        return element.type === 'link' ? true : isInline(element)
+    }
+
+    editor.insertText = (text) => {
+        if (text && isUrl(text)) {
+            wrapLink(editor, text)
+        } else {
+            insertText(text)
+        }
+    }
+
+    editor.insertData = (data) => {
+        const text = data.getData('text/plain')
+
+        if (text && isUrl(text)) {
+            wrapLink(editor, text)
+        } else {
+            insertData(data)
+        }
+    }
+
+    return editor
+}
+
+const LinkButton = () => {
+    const editor = useSlate()
+    return (
+        <button
+            className={isLinkActive(editor) ? 'text-blue-400' : ''}
+            onMouseDown={(event) => {
+                event.preventDefault()
+                const url = window.prompt('Enter the URL of the link:')
+                if (!url) return
+                insertLink(editor, url)
+            }}
+        >
+            <Icon.Link size={24} />
         </button>
     )
 }
