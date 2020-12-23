@@ -41,7 +41,9 @@ const Expert = ({ response }) => {
                                 <div
                                     className="rounded-lg overlfow-hidden text-center text-4xl flex items-center justify-center mb-8 bg-center bg-cover bg-no-repeat"
                                     style={{
-                                        backgroundImage: `linear-gradient(to bottom, rgba(166, 46, 29, 0), ${accent_color}),url(${background_image})`,
+                                        backgroundImage: `linear-gradient(to bottom, rgba(166, 46, 29, 0), ${
+                                            accent_color ? accent_color : '#fb923c'
+                                        }),url(${background_image})`,
                                     }}
                                 >
                                     <div>
@@ -307,57 +309,56 @@ const Expert = ({ response }) => {
                                     Business Hours
                                 </label>
                                 <div className="">
-                                    <ul>
-                                        <li className="flex items-center">
-                                            <span className="w-2/5">Monday:</span>
-                                            <span className="font-semibold text-gray-900">
-                                                {business_hours.monday}
-                                            </span>
-                                        </li>
-                                        <li className="flex items-center">
-                                            <span className="w-2/5">Tuesday:</span>
-                                            <span className="font-semibold text-gray-900">
-                                                {business_hours.tuesday}
-                                            </span>
-                                        </li>
-                                        <li className="flex items-center">
-                                            <span className="w-2/5">Wednesday:</span>
-                                            <span className="font-semibold text-gray-900">
-                                                {business_hours.wednesday}
-                                            </span>
-                                        </li>
-                                        <li className="flex items-center">
-                                            <span className="w-2/5">Thursday:</span>
-                                            <span className="font-semibold text-gray-900">
-                                                {business_hours.thursday}
-                                            </span>
-                                        </li>
-                                        <li className="flex items-center">
-                                            <span className="w-2/5">Friday:</span>
-                                            <span className="font-semibold text-gray-900">
-                                                {business_hours.friday}
-                                            </span>
-                                        </li>
-                                        <li className="flex items-center">
-                                            <span className="w-2/5">Saturday:</span>
-                                            <span className="font-semibold text-gray-900">
-                                                {business_hours.saturday}
-                                            </span>
-                                        </li>
-                                        <li className="flex items-center">
-                                            <span className="w-2/5">Sunday:</span>
-                                            <span className="font-semibold text-gray-900">
-                                                {business_hours.sunday}
-                                            </span>
-                                        </li>
-                                    </ul>
+                                    {business_hours.monday && (
+                                        <ul>
+                                            <li className="flex items-center">
+                                                <span className="w-2/5">Monday:</span>
+                                                <span className="font-semibold text-gray-900">
+                                                    {business_hours.monday}
+                                                </span>
+                                            </li>
+                                            <li className="flex items-center">
+                                                <span className="w-2/5">Tuesday:</span>
+                                                <span className="font-semibold text-gray-900">
+                                                    {business_hours.tuesday}
+                                                </span>
+                                            </li>
+                                            <li className="flex items-center">
+                                                <span className="w-2/5">Wednesday:</span>
+                                                <span className="font-semibold text-gray-900">
+                                                    {business_hours.wednesday}
+                                                </span>
+                                            </li>
+                                            <li className="flex items-center">
+                                                <span className="w-2/5">Thursday:</span>
+                                                <span className="font-semibold text-gray-900">
+                                                    {business_hours.thursday}
+                                                </span>
+                                            </li>
+                                            <li className="flex items-center">
+                                                <span className="w-2/5">Friday:</span>
+                                                <span className="font-semibold text-gray-900">
+                                                    {business_hours.friday}
+                                                </span>
+                                            </li>
+                                            <li className="flex items-center">
+                                                <span className="w-2/5">Saturday:</span>
+                                                <span className="font-semibold text-gray-900">
+                                                    {business_hours.saturday}
+                                                </span>
+                                            </li>
+                                            <li className="flex items-center">
+                                                <span className="w-2/5">Sunday:</span>
+                                                <span className="font-semibold text-gray-900">
+                                                    {business_hours.sunday}
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    )}
                                 </div>
                                 {ad_image && (
                                     <div>
-                                        <img
-                                            src="/img/elite_academy/elite_experts_ad.gif"
-                                            alt="Elite Experts"
-                                        />
+                                        <img src={ad_image} alt="Expert additional image" />
                                     </div>
                                 )}
                             </div>

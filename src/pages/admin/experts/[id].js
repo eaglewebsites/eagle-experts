@@ -3,13 +3,15 @@ import { withAuthenticator } from '@aws-amplify/ui-react'
 import AdminLayout from '@/components/adminLayout'
 import getExpert from '@/utils/getExpert'
 import { useRouter } from 'next/router'
-import { Auth } from 'aws-amplify'
+import { Auth, Storage } from 'aws-amplify'
 import * as Icon from 'react-feather'
 // Import the Slate editor factory.
 import { createEditor, Editor, Transforms, Range, Element as SlateElement } from 'slate'
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact, useSlate } from 'slate-react'
 import isUrl from 'is-url'
+import { nanoid } from 'nanoid'
+
 /**
  * Should use the fields utility, being lazy for now
  */
@@ -158,8 +160,16 @@ const Expert = () => {
                         value={expert.accent_color}
                         onChange={(value) => setExpert({ ...expert, accent_color: value })}
                     />
-                    <ImageUpload label="Logo" />
-                    <ImageUpload label="Background Image" />
+                    <ImageUpload
+                        label="Logo"
+                        value={expert.logo}
+                        onUploadComplete={(url) => setExpert({ ...expert, logo: url })}
+                    />
+                    <ImageUpload
+                        label="Background Image"
+                        value={expert.background_image}
+                        onUploadComplete={(url) => setExpert({ ...expert, background_image: url })}
+                    />
                     <RichText
                         label="Description"
                         value={expert.description}
@@ -217,7 +227,11 @@ const Expert = () => {
                         value={expert.promo_video_url}
                         onChange={(value) => setExpert({ ...expert, promo_video_url: value })}
                     />
-                    <ImageUpload label="Sidebar Ad Image" />
+                    <ImageUpload
+                        label="Sidebar Ad Image"
+                        value={expert.ad_image}
+                        onUploadComplete={(url) => setExpert({ ...expert, ad_image: url })}
+                    />
                 </div>
             )}
         </AdminLayout>
@@ -239,12 +253,38 @@ const TextInput = ({ label, value, onChange }) => (
     </div>
 )
 
-const ImageUpload = ({ label }) => {
+const ImageUpload = ({ value, label, onUploadComplete }) => {
+    const [isUploading, setUploading] = useState(false)
+
+    const onChange = (event) => {
+        setUploading(true)
+        const file = event.target.files[0]
+        Storage.put(`${nanoid()}.jpg`, file)
+            .then((result) => {
+                /**
+                 * Returns key on success
+                 * {key : 'test.txt'}
+                 */
+                console.log(result)
+                setUploading(false)
+                onUploadComplete(`https://eagle-experts.s3.amazonaws.com/public/${result.key}`)
+            })
+            .catch((err) => console.log(err))
+    }
+
     return (
         <div className="flex flex-col">
             <Label value={label} />
-            <div className="bg-gray-200 text-center py-8">
-                <div>Image Upload</div>
+            <div className="bg-gray-200 text-center py-8 flex flex-col">
+                <div>Image Upload {isUploading ? 'Uploading...' : null}</div>
+                <div>
+                    <input
+                        type="file"
+                        accept="image/jpeg, image/png"
+                        onChange={(event) => onChange(event)}
+                    />
+                </div>
+                {value !== '' && <img className="h-24 w-auto object-contain" src={value} />}
             </div>
         </div>
     )

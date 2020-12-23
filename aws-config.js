@@ -15,6 +15,12 @@ const awsConfig = {
         // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
         mandatorySignIn: true,
     },
+    Storage: {
+        AWSS3: {
+            bucket: 'eagle-experts',
+            region: 'us-east-1',
+        },
+    },
 }
 
 export default awsConfig

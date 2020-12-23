@@ -6,6 +6,7 @@ import awsConfig from '../../aws-config'
 
 Amplify.configure({
     Auth: awsConfig.Auth,
+    Storage: awsConfig.Storage,
 })
 
 const App = ({ Component, pageProps }) => {
