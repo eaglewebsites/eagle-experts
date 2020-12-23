@@ -10,7 +10,6 @@ const Expert = ({ response }) => {
         sub_title,
         accent_color,
         background_image,
-        description,
         social_links,
         phone,
         address,
@@ -19,6 +18,8 @@ const Expert = ({ response }) => {
         logo,
         ad_image,
     } = response
+
+    const description = JSON.parse(response.description)
 
     return (
         <>
@@ -51,7 +52,47 @@ const Expert = ({ response }) => {
                                         />
                                     </div>
                                 </div>
-                                <div className="">{description}</div>
+                                <div className="">
+                                    {description.map((item, index) => {
+                                        switch (item.type) {
+                                            case 'heading-one': {
+                                                return (
+                                                    <h1
+                                                        key={index}
+                                                        className="text-3xl leading-loose"
+                                                    >
+                                                        {item.children.map((child, index) => (
+                                                            <span key={index}>{child.text}</span>
+                                                        ))}
+                                                    </h1>
+                                                )
+                                            }
+                                            case 'link': {
+                                                return (
+                                                    <a
+                                                        key={index}
+                                                        href={item.url}
+                                                        className="text-blue-500 hover:underline"
+                                                        target="_blank"
+                                                    >
+                                                        {item.children.map((child, index) => (
+                                                            <span key={index}>{child.text}</span>
+                                                        ))}
+                                                    </a>
+                                                )
+                                            }
+                                            case 'paragraph': {
+                                                return (
+                                                    <p key={index} className="leading-loose">
+                                                        {item.children.map((child, index) => (
+                                                            <span key={index}>{child.text}</span>
+                                                        ))}
+                                                    </p>
+                                                )
+                                            }
+                                        }
+                                    })}
+                                </div>
                             </div>
                         </div>
                         <div className="md:col-span-2">
