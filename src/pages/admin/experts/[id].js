@@ -39,7 +39,9 @@ const Expert = () => {
                     } else {
                         setExpert({
                             ...data.data,
-                            description: JSON.parse(data.data.description),
+                            description: data.data.description
+                                ? JSON.parse(data.data.description)
+                                : data.data.description,
                         })
 
                         setExpertStatus(data.data.gsi1sk.includes('ACTIVE') ? 'ACTIVE' : 'PENDING')
@@ -98,7 +100,10 @@ const Expert = () => {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(expert),
+                body: JSON.stringify({
+                    ...expert,
+                    description: JSON.stringify(expert.description),
+                }),
             }).then((response) => {
                 return response.json()
             })

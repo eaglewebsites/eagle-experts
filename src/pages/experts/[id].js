@@ -42,7 +42,7 @@ const Expert = ({ response }) => {
                                     className="rounded-lg overlfow-hidden text-center text-4xl flex items-center justify-center mb-8 bg-center bg-cover bg-no-repeat"
                                     style={{
                                         backgroundImage: `linear-gradient(to bottom, rgba(166, 46, 29, 0), ${
-                                            accent_color ? accent_color : '#fb923c'
+                                            accent_color ? accent_color : '#000000'
                                         }),url(${background_image})`,
                                     }}
                                 >
