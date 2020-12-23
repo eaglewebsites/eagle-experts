@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import fields from '@/utils/fields'
 import { nanoid } from 'nanoid'
 // Import the Slate editor factory.
-import { createEditor, Editor } from 'slate'
+import { createEditor, Editor, Transforms, Element as SlateElement } from 'slate'
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact, useSlate } from 'slate-react'
 import insert from '@/utils/insert'
@@ -17,6 +17,8 @@ import { Auth } from 'aws-amplify'
  */
 const socials = ['facebook', 'youtube', 'twitter', 'instagram', 'website']
 const weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+
+const LIST_TYPES = ['numbered-list', 'bulleted-list']
 
 const NewExpert = () => {
     const router = useRouter()
@@ -212,35 +214,113 @@ const RichText = ({ label, value, onChange }) => {
 
     // Define a rendering function based on the element passed to `props`. We use
     // `useCallback` here to memoize the function for subsequent renders.
-    const renderElement = useCallback((props) => {
-        switch (props.element.type) {
-            case 'code':
-                return <CodeElement {...props} />
-            default:
-                return <DefaultElement {...props} />
-        }
-    }, [])
+    // const renderElement = useCallback((props) => {
+    //     switch (props.element.type) {
+    //         case 'code':
+    //             return <CodeElement {...props} />
+    //         default:
+    //             return <DefaultElement {...props} />
+    //     }
+    // }, [])
 
+    const renderElement = useCallback((props) => <Element {...props} />, [])
     const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
 
     return (
         <div>
             <Label value={label} />
-            <Slate editor={editor} value={value} onChange={(newValue) => onChange(newValue)}>
-                <MarkButton format="bold" title="Bold" />
-                <Editable
-                    placeholder="Enter some text…"
-                    renderElement={renderElement}
-                    renderLeaf={renderLeaf}
-                    onKeyDown={(event) => {
-                        if (event.key === '&') {
-                            event.preventDefault()
-                            editor.insertText('and')
-                        }
-                    }}
-                />
-            </Slate>
+            <div>
+                <Slate editor={editor} value={value} onChange={(newValue) => onChange(newValue)}>
+                    <div className="flex flex-row space-x-3 items-center py-3">
+                        <MarkButton format="bold" icon={<Icon.Bold size={24} />} />
+                        <BlockButton format="heading-one" icon={<Icon.Type size={24} />} />
+                    </div>
+                    <Editable
+                        className="bg-white rounded p-3"
+                        spellCheck
+                        placeholder="Enter some text…"
+                        renderElement={renderElement}
+                        renderLeaf={renderLeaf}
+                        onKeyDown={(event) => {
+                            if (event.key === '&') {
+                                event.preventDefault()
+                                editor.insertText('and')
+                            }
+                        }}
+                    />
+                </Slate>
+            </div>
         </div>
+    )
+}
+
+const toggleBlock = (editor, format) => {
+    const isActive = isBlockActive(editor, format)
+    const isList = LIST_TYPES.includes(format)
+
+    Transforms.unwrapNodes(editor, {
+        match: (n) =>
+            LIST_TYPES.includes(!Editor.isEditor(n) && SlateElement.isElement(n) && n.type),
+        split: true,
+    })
+    const newProperties = {
+        type: isActive ? 'paragraph' : isList ? 'list-item' : format,
+    }
+    Transforms.setNodes(editor, newProperties)
+
+    if (!isActive && isList) {
+        const block = { type: format, children: [] }
+        Transforms.wrapNodes(editor, block)
+    }
+}
+
+const Element = ({ attributes, children, element }) => {
+    switch (element.type) {
+        case 'block-quote':
+            return <blockquote {...attributes}>{children}</blockquote>
+        case 'bulleted-list':
+            return <ul {...attributes}>{children}</ul>
+        case 'heading-one':
+            return (
+                <h1 className="text-3xl leading-loose" {...attributes}>
+                    {children}
+                </h1>
+            )
+        case 'heading-two':
+            return <h2 {...attributes}>{children}</h2>
+        case 'list-item':
+            return <li {...attributes}>{children}</li>
+        case 'numbered-list':
+            return <ol {...attributes}>{children}</ol>
+        default:
+            return (
+                <p className="leading-loose" {...attributes}>
+                    {children}
+                </p>
+            )
+    }
+}
+
+const isBlockActive = (editor, format) => {
+    const [match] = Editor.nodes(editor, {
+        match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === format,
+    })
+
+    return !!match
+}
+
+const BlockButton = ({ format, icon }) => {
+    const editor = useSlate()
+    return (
+        <button
+            className={isBlockActive(editor, format) ? 'text-blue-400' : ''}
+            onMouseDown={(event) => {
+                event.preventDefault()
+                toggleBlock(editor, format)
+            }}
+        >
+            {icon}
+        </button>
     )
 }
 
@@ -279,17 +359,17 @@ const isMarkActive = (editor, format) => {
     return marks ? marks[format] === true : false
 }
 
-const MarkButton = ({ format, title }) => {
+const MarkButton = ({ format, icon }) => {
     const editor = useSlate()
     return (
         <button
-            active={isMarkActive(editor, format)}
+            className={isMarkActive(editor, format) ? 'text-blue-400' : ''}
             onMouseDown={(event) => {
                 event.preventDefault()
                 toggleMark(editor, format)
             }}
         >
-            {title}
+            {icon}
         </button>
     )
 }
