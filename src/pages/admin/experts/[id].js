@@ -235,7 +235,7 @@ const Expert = () => {
                         ))}
                     </div>
                     <TextInput
-                        label="Promotional Video URL"
+                        label="Promotional Video URL (must be embed URL. Eg -> https://www.youtube.com/embed/29sdfn2349)"
                         value={expert.promo_video_url}
                         onChange={(value) => setExpert({ ...expert, promo_video_url: value })}
                     />

@@ -17,9 +17,11 @@ const Navbar = () => {
             target: '_self',
         },
         {
-            title: process.env.NEXT_PUBLIC_POST_SITE_TITLE,
+            title: process.env.NEXT_PUBLIC_POST_SITE_TITLE
+                ? process.env.NEXT_PUBLIC_POST_SITE_TITLE
+                : '',
             icon: '🗞',
-            url: process.env.NEXT_PUBLIC_POST_SITE_URL,
+            url: process.env.NEXT_PUBLIC_POST_SITE_URL ? process.env.NEXT_PUBLIC_POST_SITE_URL : '',
             target: '_blank',
         },
         {
@@ -48,16 +50,22 @@ const Navbar = () => {
                         </Link>
                     </div>
                     <div className="hidden md:grid grid-flow-col divide-x-2 divide-blue-500">
-                        {links.map((item, index) => (
-                            <Link href={item.url} key={index}>
-                                <a
-                                    className="text-white hover:underline tracking-wide px-4"
-                                    target={item.target}
-                                >
-                                    {item.title}
-                                </a>
-                            </Link>
-                        ))}
+                        {links.map((item, index) => {
+                            if (item.title !== '' && item.url !== '') {
+                                return (
+                                    <Link href={item.url} key={index}>
+                                        <a
+                                            className="text-white hover:underline tracking-wide px-4"
+                                            target={item.target}
+                                        >
+                                            {item.title}
+                                        </a>
+                                    </Link>
+                                )
+                            } else {
+                                return null
+                            }
+                        })}
                     </div>
                     <div className="block md:hidden pt-2">
                         <button

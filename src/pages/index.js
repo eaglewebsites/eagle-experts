@@ -56,7 +56,7 @@ const Index = () => {
                         experts &&
                         experts.map((item, index) => (
                             <Link href={`/experts/${item.pk.replace(/EXPERT#/g, '')}`} key={index}>
-                                <a className="transition duration-150 ease-in-out flex justify-between rounded-lg overflow-hidden shadow-lg md:border-4 md:border-white hover:border-blue-500 bg-white">
+                                <a className="transition duration-150 ease-in-out flex justify-between rounded-lg overflow-hidden shadow-lg md:border-4 md:border-white hover:border-blue-500 bg-white h-56">
                                     <img
                                         className="w-32 md:w-48 object-cover"
                                         src={item.background_image}

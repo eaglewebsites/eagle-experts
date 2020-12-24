@@ -12,7 +12,17 @@ const Admin = () => {
 
     return (
         <AdminLayout>
-            <div>Experts Admin</div>
+            <div>
+                <div className="text-xl font-bold">Eagle Experts Admin</div>
+                <p className="text-gray-700 pb-5">
+                    Manage the businesses that are part of Eagle Experts across all regions.
+                </p>
+                <p className="text-gray-700">
+                    Click on the market you want to manage to the left. Each expert can only be
+                    assigned one market. If you have a business that needs to be in two separate
+                    markets, you will need to duplicate data.
+                </p>
+            </div>
         </AdminLayout>
     )
 }

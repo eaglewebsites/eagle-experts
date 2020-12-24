@@ -16,6 +16,7 @@ const Expert = ({ response }) => {
         email,
         logo,
         ad_image,
+        promo_video_url,
     } = response
 
     const description = JSON.parse(response.description)
@@ -53,6 +54,20 @@ const Expert = ({ response }) => {
                                         />
                                     </div>
                                 </div>
+                                {promo_video_url && (
+                                    <section className="my-12">
+                                        <div className="max-w-7xl mx-auto">
+                                            <iframe
+                                                width="100%"
+                                                height="480"
+                                                src={promo_video_url}
+                                                frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen
+                                            />
+                                        </div>
+                                    </section>
+                                )}
                                 <div className="">
                                     {description.map((item, index) => {
                                         switch (item.type) {
@@ -293,7 +308,7 @@ const Expert = ({ response }) => {
                                                 <polyline points="22,6 12,13 2,6"></polyline>
                                             </svg>
                                         </div>
-                                        <div>{email}</div>
+                                        <div>Email Us</div>
                                     </a>
                                 )}
                                 {address && (
