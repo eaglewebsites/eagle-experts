@@ -57,6 +57,7 @@ const handler = (req, res) => {
                         '#business_hours': 'business_hours',
                         '#promo_video_url': 'promo_video_url',
                         '#ad_image': 'ad_image',
+                        '#category': 'category',
                         '#gsi1sk': 'gsi1sk',
                     },
                     ExpressionAttributeValues: {
@@ -73,6 +74,7 @@ const handler = (req, res) => {
                         ':business_hours': payload.business_hours,
                         ':promo_video_url': payload.promo_video_url,
                         ':ad_image': payload.ad_image,
+                        ':category': payload.category,
                         ':gsi1sk': payload.gsi1sk,
                     },
                     UpdateExpression: `SET
@@ -89,6 +91,7 @@ const handler = (req, res) => {
                         #business_hours = :business_hours,
                         #promo_video_url = :promo_video_url,
                         #ad_image = :ad_image,
+                        #category = :category,
                         #gsi1sk = :gsi1sk`,
                 }
 

@@ -56,15 +56,28 @@ const Index = () => {
                         experts &&
                         experts.map((item, index) => (
                             <Link href={`/experts/${item.pk.replace(/EXPERT#/g, '')}`} key={index}>
-                                <a className="transition duration-150 ease-in-out flex justify-between rounded-lg overflow-hidden shadow-lg md:border-4 md:border-white hover:border-blue-500 bg-white h-56">
+                                <a className="transition duration-150 ease-in-out flex justify-between rounded-lg overflow-hidden shadow-lg md:border-4 md:border-white hover:border-blue-500 bg-white">
                                     <img
-                                        className="w-32 md:w-48 object-cover"
+                                        className={`w-32 md:w-48 ${
+                                            item.background_image
+                                                ? 'object-cover'
+                                                : 'p-16 opacity-50'
+                                        } bg-gradient-to-b from-gray-200 to-gray-400`}
                                         src={item.background_image}
                                     />
-                                    <div className="flex-1 p-4 bg-white">
+                                    <div className="px-4 pt-4 pb-8 relative">
                                         <p className="text-center text-xl">{item.title}</p>
                                         <div className="h-1 bg-orange-400 w-12 mx-auto rounded-full"></div>
-                                        <img className="mx-auto h-32 pt-3" src={item.logo} />
+                                        <img className="py-4" src={item.logo} />
+                                        <div
+                                            className={`text-right absolute bottom-0 right-0 p-1 md:p-0 ${
+                                                item.category ? '' : 'invisible'
+                                            }`}
+                                        >
+                                            <div className="bg-gradient-to-b from-orange-400 to-orange-500 text-white text-sm inline-block px-2 py-1 rounded-lg">
+                                                {item.category}
+                                            </div>
+                                        </div>
                                     </div>
                                 </a>
                             </Link>

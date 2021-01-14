@@ -163,6 +163,11 @@ const Expert = () => {
                         onChange={(value) => setExpert({ ...expert, subtitle: value })}
                     />
                     <TextInput
+                        label="Catagory"
+                        value={expert.category}
+                        onChange={(value) => setExpert({ ...expert, category: value })}
+                    />
+                    <TextInput
                         label="Accent Color (Hex value) Leave blank for default"
                         placeholder="#000000"
                         value={expert.accent_color}

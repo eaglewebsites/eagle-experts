@@ -17,6 +17,7 @@ const Expert = ({ response }) => {
         logo,
         ad_image,
         promo_video_url,
+        category,
     } = response
 
     const description = JSON.parse(response.description)
@@ -27,6 +28,9 @@ const Expert = ({ response }) => {
             <section className="my-12">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center py-8 px-4 md:px-0">
+                        <div className="bg-gradient-to-b from-orange-400 to-orange-500 text-white text-sm inline-block px-2 py-1 rounded-lg mb-3">
+                            {category}
+                        </div>
                         <h1 className="text-4xl font-bold">{title}</h1>
                         <p className="text-gray-800 text-xl">{sub_title}</p>
                     </div>

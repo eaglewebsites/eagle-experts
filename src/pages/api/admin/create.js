@@ -63,6 +63,7 @@ const handler = (req, res) => {
                         email: payload.email || '',
                         ad_image: payload.ad_image || '',
                         promo_video_url: payload.promo_video_url || '',
+                        category: payload.category,
                     },
                 }
 
