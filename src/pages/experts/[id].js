@@ -123,7 +123,7 @@ const Expert = ({ response }) => {
                                 <div className="">
                                     {social_links.facebook && (
                                         <a
-                                            href="https://www.facebook.com/EliteacademyMA"
+                                            href={social_links.facebook}
                                             className="flex flex-row justify-between items-center rounded-full bg-blue-600 text-white pl-4 pr-6 py-2 transition transform ease-in-out duration-150 hover:-translate-y-1 mb-5"
                                         >
                                             <div>
@@ -146,7 +146,7 @@ const Expert = ({ response }) => {
                                     )}
                                     {social_links.youtube && (
                                         <a
-                                            href="https://www.youtube.com/channel/UCXnC4Wj7Ikd9iWC45qm9Fdw"
+                                            href={social_links.youtube}
                                             className="flex flex-row justify-between items-center rounded-full bg-red-700 text-white pl-4 pr-6 py-2 transition transform ease-in-out duration-150 hover:-translate-y-1 mb-5"
                                         >
                                             <div>
@@ -170,7 +170,7 @@ const Expert = ({ response }) => {
                                     )}
                                     {social_links.instagram && (
                                         <a
-                                            href="https://www.instagram.com/explore/locations/285630308622879/elite-academy-of-martial-arts/?hl=en"
+                                            href={social_links.instagram}
                                             className="flex flex-row justify-between items-center rounded-full bg-gradient-to-br from-indigo-600 to-pink-500 text-white pl-4 pr-6 py-2 transition transform ease-in-out duration-150 hover:-translate-y-1 mb-5"
                                         >
                                             <div>
@@ -207,7 +207,7 @@ const Expert = ({ response }) => {
                                     )}
                                     {social_links.twitter && (
                                         <a
-                                            href="https://twitter.com/eliteacademyma"
+                                            href={social_links.twitter}
                                             className="flex flex-row justify-between items-center rounded-full bg-blue-400 text-white pl-4 pr-6 py-2 transition transform ease-in-out duration-150 hover:-translate-y-1 mb-5"
                                         >
                                             <div>
@@ -230,7 +230,7 @@ const Expert = ({ response }) => {
                                     )}
                                     {social_links.website && (
                                         <a
-                                            href="https://twitter.com/eliteacademyma"
+                                            href={social_links.website}
                                             className="flex flex-row justify-between items-center rounded-full bg-white text-blue-600 pl-4 pr-6 py-2 transition transform ease-in-out duration-150 hover:-translate-y-1 mb-5"
                                         >
                                             <div>
@@ -271,7 +271,7 @@ const Expert = ({ response }) => {
                                 </label>
                                 {phone && (
                                     <a
-                                        href="tel:7854304200"
+                                        href={`tel:${phone}`}
                                         className="flex flex-row justify-between items-center rounded-full bg-green-500 text-white pl-4 pr-6 py-2 transition transform ease-in-out duration-150 hover:-translate-y-1"
                                     >
                                         <div>
