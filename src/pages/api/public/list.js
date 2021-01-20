@@ -36,21 +36,22 @@ const handler = async (req, res) => {
             KeyConditionExpression: '#location = :location and begins_with(#expert, :active)',
         }
 
-        const experts = await DynamoDB.query(params, (err) => {
+        DynamoDB.query(params, (err, data) => {
             if (err) {
                 return {
                     error: true,
                 }
+            } else {
+                res.setHeader('Content-Type', 'application/json')
+                res.status(200).end(
+                    JSON.stringify({
+                        data: [...data.Items],
+                    })
+                )
             }
-        }).promise()
-
-        res.setHeader('Content-Type', 'application/json')
-        res.status(200).end(
-            JSON.stringify({
-                data: [...experts.Items],
-            })
-        )
+        })
     } catch (err) {
+        console.log(err)
         res.setHeader('Content-Type', 'application/json')
         res.status(500).end(
             JSON.stringify({

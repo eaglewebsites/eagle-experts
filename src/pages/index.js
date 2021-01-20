@@ -56,26 +56,34 @@ const Index = () => {
                         experts &&
                         experts.map((item, index) => (
                             <Link href={`/experts/${item.pk.replace(/EXPERT#/g, '')}`} key={index}>
-                                <a className="transition duration-150 ease-in-out flex justify-between rounded-lg overflow-hidden shadow-lg md:border-4 md:border-white hover:border-blue-500 bg-white">
-                                    <img
-                                        className={`w-32 md:w-48 ${
-                                            item.background_image
-                                                ? 'object-cover'
-                                                : 'p-16 opacity-50'
-                                        } bg-gradient-to-b from-gray-200 to-gray-400`}
-                                        src={item.background_image}
-                                    />
-                                    <div className="px-4 pt-4 pb-8 relative">
-                                        <p className="text-center text-xl">{item.title}</p>
-                                        <div className="h-1 bg-orange-400 w-12 mx-auto rounded-full"></div>
-                                        <img className="py-4" src={item.logo} />
+                                <a className="rounded bg-white overflow-hidden relative transform duration-150 ease-in-out hover:shadow-xl ">
+                                    <div className="col-span-2 md:col-span-1 flex flex-row">
                                         <div
-                                            className={`text-right absolute bottom-0 right-0 p-1 md:p-0 ${
-                                                item.category ? '' : 'invisible'
-                                            }`}
-                                        >
-                                            <div className="bg-gradient-to-b from-orange-400 to-orange-500 text-white text-sm inline-block px-2 py-1 rounded-lg">
-                                                {item.category}
+                                            className="w-32 md:w-48 bg-gray-200 bg-cover bg-center"
+                                            style={{
+                                                backgroundImage: `url('${item.background_image}')`,
+                                            }}
+                                            alt={`${item.title} background image`}
+                                        ></div>
+                                        <div className="flex-1 p-4">
+                                            <div className="text-center text-2xl font-medium mb-6">
+                                                {item.title}
+                                            </div>
+                                            <div className="flex justify-center px-6 ">
+                                                <img
+                                                    src={item.logo}
+                                                    alt={`${item.title} logo`}
+                                                    className="object-contain h-36"
+                                                />
+                                            </div>
+                                            <div className="flex justify-end h-24 items-end">
+                                                <div
+                                                    className={`px-2 py-1 text-sm bg-orange-500 text-orange-50 rounded${
+                                                        item.category ? '' : 'invisible'
+                                                    }`}
+                                                >
+                                                    {item.category}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
