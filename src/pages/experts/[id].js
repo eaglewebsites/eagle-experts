@@ -46,13 +46,15 @@ const Expert = ({ response }) => {
                                     className="rounded-lg overlfow-hidden text-center text-4xl flex items-center justify-center mb-8 bg-center bg-cover bg-no-repeat px-3"
                                     style={{
                                         backgroundImage: `linear-gradient(to bottom, rgba(166, 46, 29, 0), ${
-                                            accent_color ? accent_color : '#000000'
+                                            accent_color
+                                                ? `#${accent_color.replace('#', '')}`
+                                                : '#000000'
                                         }),url(${background_image})`,
                                     }}
                                 >
                                     <div className="rounded-lg overflow-hidden">
                                         <img
-                                            className="shadow-2xl rounded-lg overflow-hidden my-24 w-auto h-64 object-contain "
+                                            className="shadow-2xl rounded-lg overflow-hidden my-24 w-auto h-64 object-contain bg-white p-5"
                                             src={logo}
                                             alt="Elite Academy Logo"
                                         />
