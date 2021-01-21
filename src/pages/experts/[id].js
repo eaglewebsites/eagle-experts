@@ -109,9 +109,20 @@ const Expert = ({ response }) => {
                                                         key={index}
                                                         className="leading-loose text-lg font-thin pb-6"
                                                     >
-                                                        {item.children.map((child, index) => (
-                                                            <span key={index}>{child.text}</span>
-                                                        ))}
+                                                        {item.children.map((child, index) => {
+                                                            return (
+                                                                <span
+                                                                    key={index}
+                                                                    className={`${
+                                                                        child.bold
+                                                                            ? 'font-bold'
+                                                                            : ''
+                                                                    }`}
+                                                                >
+                                                                    {child.text}
+                                                                </span>
+                                                            )
+                                                        })}
                                                     </p>
                                                 )
                                             }
