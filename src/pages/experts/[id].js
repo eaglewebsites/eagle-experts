@@ -320,7 +320,15 @@ const Expert = ({ response }) => {
                                         <label className="uppercase tracking-wide text-gray-600 font-semibold text-sm">
                                             Find Us
                                         </label>
-                                        <div className="font-bold mb-5">{address}</div>
+                                        <a
+                                            target="_blank"
+                                            href={encodeURI(
+                                                `http://maps.google.com/maps?q=${title} ${address}`
+                                            )}
+                                            className="font-bold mb-5 underline hover:text-blue-500"
+                                        >
+                                            {address}
+                                        </a>
                                     </>
                                 )}
                                 <label className="uppercase tracking-wide text-gray-600 font-semibold text-sm">
@@ -412,66 +420,6 @@ export const getServerSideProps = async (context) => {
             console.log(err)
         }
     }).promise()
-
-    // let params = {
-    //     TableName: 'eagle-experts',
-    //     IndexName: 'gsi1',
-    //     KeyConditionNames: {
-    //         '#location': 'sk',
-    //         '#expert': 'pk',
-    //     },
-    //     KeyConditionValues: {
-    //         ':location': {
-    //             S: location,
-    //         },
-    //         ':active': {
-    //             S: 'ACTIVE',
-    //         },
-    //     },
-    //     KeyConditionExpression: '#location = :location and begins_with(#expert, :active)',
-    // }
-
-    // const response = await Dynamo.getItem(params, function (err, data) {
-    //     if (err) {
-    //         return {
-    //             error: true,
-    //         }
-    //     } else {
-    //         console.log(data)
-    //         return data
-    //     }
-    // }).promise()
-
-    // const data = {
-    //     id: context.params.id,
-    //     title: 'Elite Academy of Martial Arts',
-    //     sub_title: 'Committed to Improving Lives Through Martial Arts In Junction City',
-    //     accent_color: '#ab2b20',
-    //     background_image:
-    //         'https://img1.wsimg.com/isteam/ip/4c954b51-f8eb-4002-97f1-bb6eddeb13d4/80773713_780249395773994_8608299799143251968_n.jpg/:/rs=w:2460,h:1260,cg:true,m/cr=w:2460,h:1260,a:cc',
-    //     description: 'Really long description',
-    //     social_links: {
-    //         facebook: 'https://www.facebook.com/EliteacademyMA',
-    //         youtube: 'https://www.youtube.com/channel/UCXnC4Wj7Ikd9iWC45qm9Fdw',
-    //         instagram:
-    //             'https://www.instagram.com/explore/locations/285630308622879/elite-academy-of-martial-arts/?hl=en',
-    //         website: 'https://eliteacademyma.com/',
-    //     },
-    //     phone: '785-430-4200',
-    //     address: '826 N Washing St, Junction City, KS 66441',
-    //     business_hours: {
-    //         monday: '4:30 - 9:00 PM',
-    //         tuesday: '4:30 - 9:00 PM',
-    //         wednesday: '4:30 - 9:00 PM',
-    //         thursday: '4:30 - 9:00 PM',
-    //         friday: '4:30 - 9:00 PM',
-    //         saturday: '4:30 - 9:00 PM',
-    //         sunday: 'Closed',
-    //     },
-    //     email: 'example@example.com',
-    //     logo: 'https://experts.jcpost.com/img/elite_academy/Elite_Logo.jpg',
-    //     ad_image: 'https://experts.jcpost.com/img/elite_academy/elite_experts_ad.gif',
-    // }
 
     // Pass data to the page via props
     return {
