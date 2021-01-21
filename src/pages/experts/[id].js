@@ -81,7 +81,7 @@ const Expert = ({ response }) => {
                                                 return (
                                                     <h1
                                                         key={index}
-                                                        className="text-3xl leading-loose"
+                                                        className="text-3xl leading-loose pb-8"
                                                     >
                                                         {item.children.map((child, index) => (
                                                             <span key={index}>{child.text}</span>
@@ -107,7 +107,7 @@ const Expert = ({ response }) => {
                                                 return (
                                                     <p
                                                         key={index}
-                                                        className="leading-loose text-lg font-thin"
+                                                        className="leading-loose text-lg font-thin pb-6"
                                                     >
                                                         {item.children.map((child, index) => (
                                                             <span key={index}>{child.text}</span>
