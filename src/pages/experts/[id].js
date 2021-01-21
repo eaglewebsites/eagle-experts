@@ -94,7 +94,7 @@ const Expert = ({ response }) => {
                                                     <a
                                                         key={index}
                                                         href={item.url}
-                                                        className="text-blue-500 hover:underline"
+                                                        className="text-blue-500 hover:underline text-lg antialiased"
                                                         target="_blank"
                                                     >
                                                         {item.children.map((child, index) => (
@@ -105,7 +105,10 @@ const Expert = ({ response }) => {
                                             }
                                             case 'paragraph': {
                                                 return (
-                                                    <p key={index} className="leading-loose">
+                                                    <p
+                                                        key={index}
+                                                        className="leading-loose text-lg font-thin"
+                                                    >
                                                         {item.children.map((child, index) => (
                                                             <span key={index}>{child.text}</span>
                                                         ))}
