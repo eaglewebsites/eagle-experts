@@ -44,20 +44,20 @@ const handler = (req, res) => {
                     },
                 }
 
-                const response = await DynamoDB.get(params, (err) => {
+                DynamoDB.get(params, (err, data) => {
                     if (err) {
                         return {
                             error: true,
                         }
+                    } else {
+                        res.setHeader('Content-Type', 'application/json')
+                        res.status(200).end(
+                            JSON.stringify({
+                                data: data.Item,
+                            })
+                        )
                     }
-                }).promise()
-
-                res.setHeader('Content-Type', 'application/json')
-                res.status(200).end(
-                    JSON.stringify({
-                        data: response.Item,
-                    })
-                )
+                })
 
                 // return {
                 //     response: AWS.DynamoDB.Converter.unmarshall(response.Item),

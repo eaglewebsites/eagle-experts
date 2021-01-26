@@ -125,12 +125,24 @@ const Expert = () => {
                 <div className="mb-24 space-y-6">
                     <div className="flex justify-between items-center">
                         <div className="text-3xl font-bold capitalize mb-8">Edit Expert</div>
-                        <button
-                            onClick={() => handleUpdate()}
-                            className="text-center mb-4 px-6 py-2 bg-gradient-to-b from-blue-400 to-blue-500 text-white rounded hover:from-blue-500 hover:to-blue-400 flex flex-row items-center shadow-lg"
-                        >
-                            <Icon.Check className="mr-2" /> Update
-                        </button>
+                        <div className="flex flex-row items-center">
+                            <div className="pr-4">
+                                <a
+                                    href={`/preview/${id.replace(/EXPERT#/g, '')}`}
+                                    target="_blank"
+                                    className="text-center mb-4 px-6 py-2 bg-blue-200 text-blue-900 rounded hover:from-blue-500 hover:bg-blue-100 flex flex-row items-center"
+                                >
+                                    <Icon.Eye className="mr-2" /> View Spec Spot
+                                </a>
+                            </div>
+
+                            <button
+                                onClick={() => handleUpdate()}
+                                className="text-center mb-4 px-6 py-2 bg-gradient-to-b from-blue-400 to-blue-500 text-white rounded hover:from-blue-500 hover:to-blue-400 flex flex-row items-center shadow-lg"
+                            >
+                                <Icon.Check className="mr-2" /> Update
+                            </button>
+                        </div>
                     </div>
                     <div className="flex flex-col">
                         <Label value="Status" />
