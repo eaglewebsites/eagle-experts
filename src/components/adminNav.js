@@ -16,6 +16,11 @@ const AdminNav = () => {
             link: '/admin/location/jc',
             icon: <Icon.MapPin />,
         },
+        {
+            title: 'Hays',
+            link: '/admin/location/hays',
+            icon: <Icon.MapPin />,
+        },
     ]
 
     const handleLogout = () => {
